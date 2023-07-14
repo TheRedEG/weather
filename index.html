@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Météo</title>
+</head>
+<body>
+  <h1>Informations météo</h1>
+
+  <div id="weather-info">
+    <p>Chargement...</p>
+  </div>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(fetchWeather);
+      } else {
+        displayError("La géolocalisation n'est pas supportée par votre navigateur.");
+      }
+    }
+
+    function fetchWeather(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const apiKey = 'af5772920ff153293c948a75d76f37f5'; // Remplacez par votre propre clé API OpenWeatherMap
+
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+      fetch(weatherUrl)
+        .then(response => response.json())
+        .then(data => {
+          displayWeather(data);
+        })
+        .catch(error => {
+          displayError("Erreur lors de la récupération des données météo.");
+        });
+    }
+
+    function displayWeather(data) {
+      const weatherInfo = document.getElementById('weather-info');
+      const weatherDescription = data.weather[0].description;
+      const temperature = data.main.temp;
+      const location = data.name;
+
+      weatherInfo.innerHTML = `<p>Localisation : ${location}</p>
+                               <p>Météo actuelle : ${weatherDescription}</p>
+                               <p>Température : ${temperature}°C</p>`;
+    }
+
+    function displayError(message) {
+      const weatherInfo = document.getElementById('weather-info');
+      weatherInfo.innerHTML = `<p>${message}</p>`;
+    }
+
+    getLocation();
+  </script>
+</body>
+</html>
