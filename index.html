@@ -3,12 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <title>Météo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #007bff;
+      color: #333;
+      margin: 0;
+    }
+
+    .header {
+      background-color: #000;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .weather-info {
+      margin-top: 20px;
+    }
+
+    .weather-info p {
+      margin-bottom: 10px;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  <h1>Informations météo</h1>
+  <div class="header">
+    <h1>Weather Forecast</h1>
+  </div>
 
-  <div id="weather-info">
-    <p>Chargement...</p>
+  <div class="container">
+    <h2>Informations météo</h2>
+
+    <div class="weather-info">
+      <p>Chargement...</p>
+    </div>
   </div>
 
   <script>
@@ -24,7 +71,7 @@
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      const apiKey = 'af5772920ff153293c948a75d76f37f5'; // Remplacez par votre propre clé API OpenWeatherMap
+      const apiKey = 'VOTRE_CLÉ_API_OPENWEATHERMAP'; // Remplacez par votre propre clé API OpenWeatherMap
 
       const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
@@ -39,7 +86,7 @@
     }
 
     function displayWeather(data) {
-      const weatherInfo = document.getElementById('weather-info');
+      const weatherInfo = document.querySelector('.weather-info');
       const weatherDescription = data.weather[0].description;
       const temperature = data.main.temp;
       const location = data.name;
@@ -50,8 +97,8 @@
     }
 
     function displayError(message) {
-      const weatherInfo = document.getElementById('weather-info');
-      weatherInfo.innerHTML = `<p>${message}</p>`;
+      const weatherInfo = document.querySelector('.weather-info');
+      weatherInfo.innerHTML = `<p class="error">${message}</p>`;
     }
 
     getLocation();
